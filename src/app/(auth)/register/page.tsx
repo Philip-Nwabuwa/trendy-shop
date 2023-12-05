@@ -8,7 +8,7 @@ import { UserAuthForm } from "@/components/UserAuthForm";
 import { Grape } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Login to Trendy Store",
+  title: "Register an account.",
   description:
     "Unlock access to exclusive deals and a seamless shopping experience. Login now to Trendy Store for a world of fashionable finds and top-notch service.",
 };
@@ -17,7 +17,7 @@ export default function AuthenticationPage() {
   return (
     <>
       <div className="container relative h-screen flex-col items-center justify-center grid lg:max-w-none lg:grid-cols-2 lg:px-0">
-        <Link
+      <Link
           className="flex flex-row absolute left-4 top-4 md:left-8 md:top-8-lg font-medium py-2 px-4"
           href="/"
         >
@@ -25,13 +25,13 @@ export default function AuthenticationPage() {
           Trendy Store
         </Link>
         <Link
-          href="/register"
+          href="/login"
           className={cn(
             buttonVariants({ variant: "ghost" }),
             "absolute right-4 top-4 md:right-8 md:top-8"
           )}
         >
-          Sign In
+          Login
         </Link>
         <div className="relative hidden h-full flex-col bg-muted p-10 text-white dark:border-r lg:flex">
           <div className="absolute inset-0 bg-zinc-900" />
@@ -57,10 +57,10 @@ export default function AuthenticationPage() {
           <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
             <div className="flex flex-col space-y-2 text-center">
               <h1 className="text-2xl font-semibold tracking-tight">
-                Log in to your account
+                Create an account
               </h1>
               <p className="text-sm text-muted-foreground">
-                Enter your email below to login.
+                Enter your email below to create your account
               </p>
             </div>
             <UserAuthForm />
