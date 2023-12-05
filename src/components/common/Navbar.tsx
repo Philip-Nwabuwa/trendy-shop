@@ -1,6 +1,6 @@
 "use client";
 
-import { Grape, Menu, User, X } from "lucide-react";
+import { Clock, Grape, Heart, Menu, Package, ShoppingCart, User, Users, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import MaxWidthWrapper from "./MaxWidthWrapper";
@@ -22,6 +22,41 @@ const Navbar = () => {
   const RenderNull = pathName === "/login" || pathName === "/register";
   const HomePage = pathName === "/";
 
+  const navigationItems = [
+    {
+      name: "How it works",
+      url: "/how-it-works",
+    },
+    {
+      name: "About us",
+      url: "/about-us",
+    },
+        {
+      name: "FAQs",
+      url: "/faqs",
+    },
+    {
+      name: "Our produce",
+      url: "/our-produce",
+    },
+    {
+      name: "Trendy store perks",
+      url: "/store-perks",
+    },
+    {
+      name: "Eco-friendly packaging",
+      url: "/eco-friendly-packaging",
+    },
+    {
+      name: "Join our waitlist",
+      url: "/waitlist",
+    },
+    {
+      name: "Referral program",
+      url: "/referral-program",
+    },
+  ];
+  
   return (
     <div>
       {RenderNull ? null : (
@@ -29,8 +64,8 @@ const Navbar = () => {
           {HomePage ? (
             <div className="w-full h-16 flex item-center justify-center">
               <p className="flex items-center justify-center text-center">
-                Congrats! You've earned free shipping on each of your first two
-                orders of $35 or more Learn more
+                Congrats! You&apos;ve earned free shipping on each of your first two
+                orders of $35 or more Learn more.
               </p>
             </div>
           ) : null}
@@ -51,8 +86,18 @@ const Navbar = () => {
                     </NavigationMenuTrigger>
                     <NavigationMenuContent>
                       <div className="w-[150px] max-w-full grid gap-y-2 p-4">
-                        <NavigationMenuLink>FAQ</NavigationMenuLink>
-                        <NavigationMenuLink>How it works</NavigationMenuLink>
+                      <ul>
+                      {navigationItems.map((item, index) => (
+                        <li key={index}>
+                          <NavigationMenuLink
+                            href={item.url}
+                            className="flex flex-row gap-4 items-center hover:underline"
+                          >
+                            {item.name}
+                          </NavigationMenuLink>
+                        </li>
+                      ))}
+                    </ul>
                       </div>
                     </NavigationMenuContent>
                   </NavigationMenuItem>
