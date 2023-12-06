@@ -62,14 +62,14 @@ const Navbar = () => {
       {RenderNull ? null : (
         <MaxWidthWrapper className="fixed z-10 top-0 right-0">
           {HomePage ? (
-            <div className="w-full h-16 flex item-center justify-center">
+            <div className="w-full bg-white h-16 flex item-center justify-center">
               <p className="flex items-center justify-center text-center">
                 Congrats! You&apos;ve earned free shipping on each of your first two
                 orders of $35 or more Learn more.
               </p>
             </div>
           ) : null}
-          <div className="h-[80px] flex items-center justify-between">
+          <div className="h-[80px] bg-white flex items-center justify-between">
             <Link
               className="relative z-20 flex items-center text-xl font-bold"
               href="/"
