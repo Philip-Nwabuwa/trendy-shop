@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 import { UserAuthForm } from "@/components/UserAuthForm";
 import { Grape } from "lucide-react";
+import { RegisterForm } from "@/components/RegisterForm";
 
 export const metadata: Metadata = {
   title: "Register an account.",
@@ -17,7 +18,7 @@ export default function AuthenticationPage() {
   return (
     <>
       <div className="container relative h-screen flex-col items-center justify-center grid lg:max-w-none lg:grid-cols-2 lg:px-0">
-      <Link
+        <Link
           className="flex flex-row absolute left-4 top-4 md:left-8 md:top-8-lg font-medium py-2 px-4"
           href="/"
         >
@@ -63,7 +64,7 @@ export default function AuthenticationPage() {
                 Enter your email below to create your account
               </p>
             </div>
-            <UserAuthForm />
+            <RegisterForm />
             <p className="px-8 text-center text-sm text-muted-foreground">
               By clicking continue, you agree to our{" "}
               <Link

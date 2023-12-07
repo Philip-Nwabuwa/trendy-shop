@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { Toaster } from "sonner";
 import Navbar from "@/components/common/Navbar";
 import TanstackProvider from "@/Providers/TanstackProvider";
 
@@ -23,6 +24,7 @@ export default function RootLayout({
         <TanstackProvider>
           <Navbar />
           <main>{children}</main>
+          <Toaster position="top-center" richColors />
         </TanstackProvider>
       </body>
     </html>
