@@ -10,12 +10,11 @@ import { Eye, EyeOff, Shell } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import axios from "axios";
 import AuthValidator, {
   TAuthValidator,
 } from "@/lib/Validators/accountValidator";
 import { toast } from "sonner";
-import { useRegisterUser } from "@/hooks/formHook";
+import { useRegisterUser, useValidateUser } from "@/hooks/formHook";
 
 interface RegisterFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -38,12 +37,19 @@ export function RegisterForm({ className, ...props }: RegisterFormProps) {
   const watchEmail = watch("email");
   const watchPassword = watch("password");
   const { mutateAsync: registerUser, isLoading } = useRegisterUser();
+  const { mutateAsync: validateUser } = useValidateUser();
 
   const onSubmit = async ({ email, password }: TAuthValidator) => {
     try {
-      const result = await registerUser({ email, password });
-      reset();
-      toast.success(result.data.message);
+      const registeredUser = await validateUser({ email });
+      if (registeredUser.data.user === null) {
+        const result = await registerUser({ email, password });
+        reset();
+        toast.success(result.data.message);
+      } else {
+        toast.error("The user has already been registered. Proceed to login");
+        return;
+      }
     } catch (error: any) {
       const errorMessage = error.response?.data?.message || "An error occurred";
       toast.error(errorMessage);
