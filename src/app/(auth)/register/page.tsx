@@ -6,8 +6,8 @@ import { buttonVariants } from "@/components/ui/button";
 import { Grape } from "lucide-react";
 import { RegisterForm } from "@/components/RegisterForm";
 import { getServerSession } from "next-auth/next";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
+import { authOptions } from "@/lib/authOptions";
 
 export const metadata: Metadata = {
   title: "Register an account.",

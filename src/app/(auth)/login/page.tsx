@@ -7,8 +7,8 @@ import { buttonVariants } from "@/components/ui/button";
 import { UserAuthForm } from "@/components/UserAuthForm";
 import { Grape } from "lucide-react";
 import { getServerSession } from "next-auth/next";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
+import { authOptions } from "@/lib/authOptions";
 
 export const metadata: Metadata = {
   title: "Login to Trendy Store",
