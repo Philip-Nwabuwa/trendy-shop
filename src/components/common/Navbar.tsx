@@ -87,7 +87,7 @@ const Navbar = () => {
                   <NavigationMenuList>
                     <NavigationMenuItem>
                       <NavigationMenuTrigger className="font-bold">
-                        {session.user?.email}'s Account
+                        {session.user?.email}&apos;s Account
                       </NavigationMenuTrigger>
                       <NavigationMenuContent>
                         <div className="w-[150px] max-w-full grid gap-y-2 p-4">

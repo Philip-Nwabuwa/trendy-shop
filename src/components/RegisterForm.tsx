@@ -32,9 +32,14 @@ export function RegisterForm({ className, ...props }: RegisterFormProps) {
     mode: "onChange",
   });
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
+  };
+  const toggleConfirmPasswordVisibility = () => {
+    setShowConfirmPassword(!showConfirmPassword);
   };
   const watchEmail = watch("email");
   const watchPassword = watch("password");
@@ -43,6 +48,10 @@ export function RegisterForm({ className, ...props }: RegisterFormProps) {
 
   const onSubmit = async ({ email, password }: TAuthValidator) => {
     try {
+      if (password !== confirmPassword) {
+        toast.error("Passwords do not match");
+        return;
+      }
       const registeredUser = await validateUser({ email });
       if (registeredUser.data.user === null) {
         const result = await registerUser({ email, password });
@@ -83,7 +92,7 @@ export function RegisterForm({ className, ...props }: RegisterFormProps) {
               </Label>
               <Input
                 {...register("password")}
-                id="email"
+                id="password"
                 placeholder="password"
                 type={showPassword ? "text" : "password"}
                 autoCapitalize="none"
@@ -98,9 +107,36 @@ export function RegisterForm({ className, ...props }: RegisterFormProps) {
                 {showPassword ? <Eye /> : <EyeOff />}
               </button>
             </div>
+            <div className="relative">
+              <Label className="sr-only" htmlFor="email">
+                Confirm Password
+              </Label>
+              <Input
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                id="confirmPassword"
+                placeholder="Confirm password"
+                type={showConfirmPassword ? "text" : "password"}
+                autoCapitalize="none"
+                autoCorrect="off"
+                disabled={isLoading}
+              />
+              <button
+                type="button"
+                className="absolute top-2 right-0 flex items-center pr-3 focus:outline-none"
+                onClick={toggleConfirmPasswordVisibility}
+              >
+                {showConfirmPassword ? <Eye /> : <EyeOff />}
+              </button>
+            </div>
           </div>
           <Button
-            disabled={isLoading || !isValid || !watchEmail || !watchPassword}
+            disabled={
+              isLoading ||
+              !isValid ||
+              !watchEmail ||
+              !watchPassword ||
+              !confirmPassword
+            }
           >
             {isLoading && <Shell className="mr-2 h-4 w-4 animate-spin" />}
             Continue
