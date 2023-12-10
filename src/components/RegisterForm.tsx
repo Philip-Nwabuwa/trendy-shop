@@ -15,10 +15,12 @@ import AuthValidator, {
 } from "@/lib/Validators/accountValidator";
 import { toast } from "sonner";
 import { useRegisterUser, useValidateUser } from "@/hooks/formHook";
+import { useRouter } from "next/navigation";
 
 interface RegisterFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export function RegisterForm({ className, ...props }: RegisterFormProps) {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -46,6 +48,7 @@ export function RegisterForm({ className, ...props }: RegisterFormProps) {
         const result = await registerUser({ email, password });
         reset();
         toast.success(result.data.message);
+        router.push("/login");
       } else {
         toast.error("The user has already been registered. Proceed to login");
         return;

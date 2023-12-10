@@ -6,6 +6,9 @@ import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 import { UserAuthForm } from "@/components/UserAuthForm";
 import { Grape } from "lucide-react";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "Login to Trendy Store",
@@ -13,7 +16,11 @@ export const metadata: Metadata = {
     "Unlock access to exclusive deals and a seamless shopping experience. Login now to Trendy Store for a world of fashionable finds and top-notch service.",
 };
 
-export default function AuthenticationPage() {
+export default async function AuthenticationPage() {
+  const session = await getServerSession(authOptions);
+  if (session?.user?.email) {
+    redirect("/shop");
+  }
   return (
     <>
       <div className="container relative h-screen flex-col items-center justify-center grid lg:max-w-none lg:grid-cols-2 lg:px-0">

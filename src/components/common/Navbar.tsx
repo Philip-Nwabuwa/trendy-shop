@@ -1,10 +1,10 @@
 "use client";
 
-import { Clock, Grape, Heart, Menu, Package, ShoppingCart, User, Users, X } from "lucide-react";
+import { Grape, ShoppingCart, User } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import MaxWidthWrapper from "./MaxWidthWrapper";
-import { buttonVariants } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -17,7 +17,11 @@ import {
 } from "@/components/ui/navigation-menu";
 import { cn } from "@/lib/utils";
 import MobileNav from "./MobileNav";
+import { signOut, useSession } from "next-auth/react";
 const Navbar = () => {
+  const { data: session } = useSession();
+  console.log(session);
+
   const pathName = usePathname();
   const RenderNull = pathName === "/login" || pathName === "/register";
   const HomePage = pathName === "/";
@@ -31,7 +35,7 @@ const Navbar = () => {
       name: "About us",
       url: "/about-us",
     },
-        {
+    {
       name: "FAQs",
       url: "/faqs",
     },
@@ -56,7 +60,7 @@ const Navbar = () => {
       url: "/referral-program",
     },
   ];
-  
+
   return (
     <div>
       {RenderNull ? null : (
@@ -64,8 +68,8 @@ const Navbar = () => {
           {HomePage ? (
             <div className="w-full bg-white h-16 flex item-center justify-center">
               <p className="flex items-center justify-center text-center">
-                Congrats! You&apos;ve earned free shipping on each of your first two
-                orders of $35 or more Learn more.
+                Congrats! You&apos;ve earned free shipping on each of your first
+                two orders of $35 or more Learn more.
               </p>
             </div>
           ) : null}
@@ -78,55 +82,96 @@ const Navbar = () => {
               Trendy Store
             </Link>
             <div className="flex flex-row items-center gap-4 lg:gap-6">
-              <NavigationMenu className="hidden lg:flex">
-                <NavigationMenuList>
-                  <NavigationMenuItem>
-                    <NavigationMenuTrigger className="font-bold">
-                      About Us
-                    </NavigationMenuTrigger>
-                    <NavigationMenuContent>
-                      <div className="w-[150px] max-w-full grid gap-y-2 p-4">
-                      <ul>
-                      {navigationItems.map((item, index) => (
-                        <li key={index}>
-                          <NavigationMenuLink
-                            href={item.url}
-                            className="flex flex-row gap-4 items-center hover:underline"
-                          >
-                            {item.name}
-                          </NavigationMenuLink>
-                        </li>
-                      ))}
-                    </ul>
-                      </div>
-                    </NavigationMenuContent>
-                  </NavigationMenuItem>
-                </NavigationMenuList>
-              </NavigationMenu>
-              <Link
-                className={cn(
-                  buttonVariants({
-                    variant: "ghost",
-                  }),
-                  "flex items-center gap-2 font-bold"
-                )}
-                href="/login"
-              >
-                <User /> <span>Sign in</span>
-              </Link>
+              {session ? (
+                <NavigationMenu className="hidden lg:flex">
+                  <NavigationMenuList>
+                    <NavigationMenuItem>
+                      <NavigationMenuTrigger className="font-bold">
+                        {session.user?.email}'s Account
+                      </NavigationMenuTrigger>
+                      <NavigationMenuContent>
+                        <div className="w-[150px] max-w-full grid gap-y-2 p-4">
+                          <ul>
+                            {navigationItems.map((item, index) => (
+                              <li key={index}>
+                                <NavigationMenuLink
+                                  href={item.url}
+                                  className="flex flex-row gap-4 items-center hover:underline"
+                                >
+                                  {item.name}
+                                </NavigationMenuLink>
+                              </li>
+                            ))}
+                          </ul>
+                          <Button onClick={() => signOut()} className="w-full">
+                            Log out
+                          </Button>
+                        </div>
+                      </NavigationMenuContent>
+                    </NavigationMenuItem>
+                  </NavigationMenuList>
+                </NavigationMenu>
+              ) : (
+                <NavigationMenu className="hidden lg:flex">
+                  <NavigationMenuList>
+                    <NavigationMenuItem>
+                      <NavigationMenuTrigger className="font-bold">
+                        About Us
+                      </NavigationMenuTrigger>
+                      <NavigationMenuContent>
+                        <div className="w-[150px] max-w-full grid gap-y-2 p-4">
+                          <ul>
+                            {navigationItems.map((item, index) => (
+                              <li key={index}>
+                                <NavigationMenuLink
+                                  href={item.url}
+                                  className="flex flex-row gap-4 items-center hover:underline"
+                                >
+                                  {item.name}
+                                </NavigationMenuLink>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      </NavigationMenuContent>
+                    </NavigationMenuItem>
+                  </NavigationMenuList>
+                </NavigationMenu>
+              )}
 
-              <Link
-                href="/register"
-                className={cn(
-                  buttonVariants({
-                    variant: "default",
-                  }),
-                  "w-[160px] h-[44px] hidden lg:flex"
-                )}
-              >
-                Get Started
-              </Link>
-              <MobileNav />
+              {session ? (
+                <div>
+                  <ShoppingCart />
+                </div>
+              ) : (
+                <>
+                  <Link
+                    className={cn(
+                      buttonVariants({
+                        variant: "ghost",
+                      }),
+                      "flex items-center gap-2 font-bold"
+                    )}
+                    href="/login"
+                  >
+                    <User /> <span>Sign in</span>
+                  </Link>
+
+                  <Link
+                    href="/register"
+                    className={cn(
+                      buttonVariants({
+                        variant: "default",
+                      }),
+                      "w-[160px] h-[44px] hidden lg:flex"
+                    )}
+                  >
+                    Get Started
+                  </Link>
+                </>
+              )}
+
+              <MobileNav session={session} />
             </div>
           </div>
         </MaxWidthWrapper>

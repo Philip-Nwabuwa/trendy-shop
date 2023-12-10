@@ -4,6 +4,7 @@ import "./globals.css";
 import { Toaster } from "sonner";
 import Navbar from "@/components/common/Navbar";
 import TanstackProvider from "@/Providers/TanstackProvider";
+import { AuthProvider } from "@/Providers/SessionProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,11 +22,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <TanstackProvider>
-          <Navbar />
-          <main>{children}</main>
-          <Toaster position="top-center" richColors />
-        </TanstackProvider>
+        <AuthProvider>
+          <TanstackProvider>
+            <Navbar />
+            <main>{children}</main>
+            <Toaster position="top-center" richColors />
+          </TanstackProvider>
+        </AuthProvider>
       </body>
     </html>
   );

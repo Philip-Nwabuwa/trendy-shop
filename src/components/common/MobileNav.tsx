@@ -19,7 +19,6 @@ import {
   HelpingHand,
 } from "lucide-react";
 
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -30,8 +29,9 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { signOut } from "next-auth/react";
 
-const MobileNav = () => {
+const MobileNav = ({ session }: any) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const navigationItems = [
@@ -114,7 +114,7 @@ const MobileNav = () => {
 
   // when we click the path we are currently on, we still want the mobile menu to close,
   // however we cant rely on the pathname for it because that won't change (we're already there)
-const closeOnCurrent = (href: string) => {
+  const closeOnCurrent = (href: string) => {
     if (pathname === href) {
       setIsOpen(false);
     }
@@ -175,17 +175,26 @@ const closeOnCurrent = (href: string) => {
             </div>
 
             <div className="flex flex-col mt-2 p-4 gap-2">
-              <Button className="w-full">Get Started</Button>
-              <Button
-                className={cn(
-                  buttonVariants({
-                    variant: "secondary",
-                  }),
-                  "w-full"
-                )}
-              >
-                Sign In
-              </Button>
+              {session ? (
+                <Button onClick={() => signOut()} className="w-full">
+                  Log out
+                </Button>
+              ) : (
+                <>
+                  {" "}
+                  <Button className="w-full">Get Started</Button>
+                  <Button
+                    className={cn(
+                      buttonVariants({
+                        variant: "secondary",
+                      }),
+                      "w-full"
+                    )}
+                  >
+                    Sign In
+                  </Button>
+                </>
+              )}
             </div>
 
             <div className="px-4 py-6">
