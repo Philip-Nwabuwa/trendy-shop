@@ -10,9 +10,7 @@ import { Eye, EyeOff, Shell } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import AuthValidator, {
-  TAuthValidator,
-} from "@/lib/Validators/accountValidator";
+import { loginAuthValidator } from "@/lib/Validators/accountValidator";
 import { signIn } from "next-auth/react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
@@ -26,8 +24,8 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     handleSubmit,
     formState: { errors, isValid },
     watch,
-  } = useForm<TAuthValidator>({
-    resolver: zodResolver(AuthValidator),
+  } = useForm<loginAuthValidator>({
+    resolver: zodResolver(loginAuthValidator),
     mode: "onChange",
   });
   const [showPassword, setShowPassword] = useState(false);
@@ -39,7 +37,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   const watchEmail = watch("email");
   const watchPassword = watch("password");
 
-  const onSubmit = async ({ email, password }: TAuthValidator) => {
+  const onSubmit = async ({ email, password }: loginAuthValidator) => {
     try {
       setIsLoading(true);
       const result = await signIn("credentials", {
@@ -63,22 +61,27 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
 
   return (
     <div className={cn("grid gap-6", className)} {...props}>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form>
         <div className="grid gap-2">
           <div className="grid gap-3">
-            <Label className="sr-only" htmlFor="email">
-              Email
-            </Label>
-            <Input
-              {...register("email")}
-              id="email"
-              placeholder="email@example.com"
-              type="email"
-              autoCapitalize="none"
-              autoComplete="email"
-              autoCorrect="off"
-              disabled={isLoading}
-            />
+            <div>
+              <Label className="sr-only" htmlFor="email">
+                Email
+              </Label>
+              <Input
+                {...register("email")}
+                id="email"
+                placeholder="email@example.com"
+                type="email"
+                autoCapitalize="none"
+                autoComplete="email"
+                autoCorrect="off"
+                disabled={isLoading}
+              />
+              {errors.email && (
+                <p className="text-red-500 text-xs pt-2">{`${errors.email.message}`}</p>
+              )}
+            </div>
             <div className="relative">
               <Label className="sr-only" htmlFor="email">
                 Password
@@ -92,6 +95,9 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
                 autoCorrect="off"
                 disabled={isLoading}
               />
+              {errors.password && (
+                <p className="text-red-500 text-xs pt-2">{`${errors.password.message}`}</p>
+              )}
               <button
                 type="button"
                 className="absolute top-2 right-0 flex items-center pr-3 focus:outline-none"
@@ -102,7 +108,8 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
             </div>
           </div>
           <Button
-            disabled={isLoading || !isValid || !watchEmail || !watchPassword}
+            onClick={handleSubmit(onSubmit)}
+            disabled={isLoading || !watchEmail || !watchPassword}
           >
             {isLoading && <Shell className="mr-2 h-4 w-4 animate-spin" />}
             Sign In

@@ -7,7 +7,7 @@ const AddressSchema = z.object({
   country: z.string(),
 });
 
-const AuthValidator = z.object({
+export const AuthValidator = z.object({
   email: z.string().email(),
   password: z
     .string()
@@ -18,6 +18,12 @@ const AuthValidator = z.object({
   address: AddressSchema,
 });
 
-export default AuthValidator;
+export const loginAuthValidator = z.object({
+  email: z.string().email(),
+  password: z
+    .string()
+    .min(8, { message: "password must be at least 8 chaeacters long." }),
+});
 
 export type TAuthValidator = z.infer<typeof AuthValidator>;
+export type loginAuthValidator = z.infer<typeof loginAuthValidator>;
